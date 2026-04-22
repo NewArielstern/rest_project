@@ -123,7 +123,8 @@ def dm_insert_model(model_name:str,db_name)->dict|None:
             conn.commit()
             return dm_get_model_by_id(new_id,db_name)
 
-
+    except sqlite3.IntegrityError:
+        raise HTTPException(status_code=400, detail="Model already exists,Delete your Current Model and train again")
 
     except sqlite3.OperationalError:
         raise HTTPException(status_code=500, detail="Database error")
